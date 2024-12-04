@@ -1,42 +1,160 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player {
+  width: 100%;
+  max-width: 400px;
   padding: 2rem;
+  margin: 2rem auto;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.cover {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.info {
+  margin-bottom: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.info h2 {
+  margin: 0;
+  font-size: 1.5rem;
 }
 
-.card {
-  padding: 2em;
+.info p {
+  margin: 0.25rem 0;
+  color: #666;
 }
 
-.read-the-docs {
-  color: #888;
+.controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+/* .controls button,
+.controls button:hover {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  margin: 0;
+} */
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 0.5rem 0;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: #e3e3e3;
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  transition: height 0.1s ease-in-out;
+}
+
+.progress-bar:hover {
+  height: 8px;
+}
+
+.progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: #333;
+  border-radius: 3px;
+  transition: width 0.1s linear;
+}
+
+.time {
+  font-size: 0.875rem;
+  color: #666;
+  min-width: 45px;
+  font-family: monospace;
+}
+
+.playlist {
+  @apply p-4 sm:p-0;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.playlist-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  gap: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.playlist-item:hover {
+  background-color: #f5f5f5;
+}
+
+.playlist-item.active {
+  background-color: #e3e3e3;
+}
+
+.playlist-cover {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.playlist-info {
+  flex: 1;
+  text-align: left;
+}
+
+.song-name {
+  font-weight: 500;
+}
+
+.singer-name {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.playlist-control {
+  display: flex;
+  justify-content: center;
+}
+
+.playlist-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .controls button,
+.controls button:hover,
+.playlist-btn {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  margin: 0;
+} */
+
+.playlist-dialog {
+  min-width: 400px;
 }
