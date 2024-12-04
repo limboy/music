@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
 import { useMediaQuery } from "@/hooks/use-media-query"
@@ -53,10 +53,10 @@ function App() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audio] = useState(new Audio());
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [open, setOpen] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   useEffect(() => {
@@ -69,44 +69,49 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (currentSong) {
-      audio.src = `https://pb.limboy.me/api/files/music/${currentSong.id}/${currentSong.song}`;
-      if (isPlaying) audio.play();
+    if (currentSong && audioRef.current) {
+      audioRef.current.src = `https://pb.limboy.me/api/files/music/${currentSong.id}/${currentSong.song}`;
+      if (isPlaying) audioRef.current.play();
     }
   }, [currentSong]);
 
   useEffect(() => {
-    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
-    const handleDurationChange = () => setDuration(audio.duration);
+    const handleTimeUpdate = () => setCurrentTime(audioRef.current?.currentTime || 0);
+    const handleDurationChange = () => setDuration(audioRef.current?.duration || 0);
 
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.addEventListener('loadedmetadata', handleDurationChange);
+    const audioElement = audioRef.current;
+    audioElement?.addEventListener('timeupdate', handleTimeUpdate);
+    audioElement?.addEventListener('loadedmetadata', handleDurationChange);
 
     return () => {
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('loadedmetadata', handleDurationChange);
+      audioElement?.removeEventListener('timeupdate', handleTimeUpdate);
+      audioElement?.removeEventListener('loadedmetadata', handleDurationChange);
     };
-  }, [audio]);
+  }, []);
 
   const togglePlay = () => {
+    if (!audioRef.current) return;
+
     if (isPlaying) {
-      audio.pause();
+      audioRef.current.pause();
     } else {
-      audio.play();
+      audioRef.current.play();
     }
     setIsPlaying(!isPlaying);
   };
 
-  const playNext = () => {
-    const currentIndex = songs.findIndex(song => song.id === currentSong?.id);
-    const nextSong = songs[(currentIndex + 1) % songs.length];
-    setCurrentSong(nextSong);
-  };
+  // const playNext = () => {
+  //   const currentIndex = songs.findIndex(song => song.id === currentSong?.id);
+  //   const nextSong = songs[(currentIndex + 1) % songs.length];
+  //   setCurrentSong(nextSong);
+  // };
 
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!audioRef.current) return;
+
     const rect = e.currentTarget.getBoundingClientRect();
     const ratio = (e.clientX - rect.left) / rect.width;
-    audio.currentTime = ratio * duration;
+    audioRef.current.currentTime = ratio * duration;
   };
 
   const formatTime = (time: number) => {
@@ -119,6 +124,12 @@ function App() {
     setCurrentSong(song);
     setIsPlaying(true);
     setOpen(false);
+  };
+
+  const handleSongEnd = () => {
+    const currentIndex = songs.findIndex(song => song.id === currentSong?.id);
+    const nextSong = songs[(currentIndex + 1) % songs.length];
+    setCurrentSong(nextSong);
   };
 
   return (
@@ -203,6 +214,12 @@ function App() {
               </Drawer>
             )}
           </div>
+          <audio
+            ref={audioRef}
+            onTimeUpdate={() => audioRef.current && setCurrentTime(audioRef.current.currentTime)}
+            onLoadedMetadata={() => audioRef.current && setDuration(audioRef.current.duration)}
+            onEnded={handleSongEnd}
+          />
         </>
       )}
     </div>
