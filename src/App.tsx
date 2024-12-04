@@ -152,7 +152,7 @@ function App() {
             <div className="progress-bar" onClick={handleProgressClick}>
               <div
                 className="progress-fill"
-                style={{ width: `${(currentTime / duration) * 100}%` }}
+                style={{ width: `${(currentTime / duration) * 100}%`, minWidth: '6px' }}
               />
             </div>
             <div className="time">{formatTime(duration || undefined)}</div>
