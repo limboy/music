@@ -73,6 +73,7 @@ function App() {
       audioRef.current.src = `https://pb.limboy.me/api/files/music/${currentSong.id}/${currentSong.song}`;
       if (isPlaying) audioRef.current.play();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSong]);
 
   useEffect(() => {
