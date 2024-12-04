@@ -90,6 +90,12 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (currentSong) {
+      document.title = `${currentSong.name} - ${currentSong.singer}`;
+    }
+  }, [currentSong]);
+
   const togglePlay = () => {
     if (!audioRef.current) return;
 
@@ -219,6 +225,7 @@ function App() {
           </div>
           <audio
             ref={audioRef}
+            title={currentSong?.name}
             onTimeUpdate={() => audioRef.current && setCurrentTime(audioRef.current.currentTime)}
             onLoadedMetadata={() => audioRef.current && setDuration(audioRef.current.duration)}
             onEnded={handleSongEnd}
