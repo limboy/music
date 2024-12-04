@@ -114,7 +114,8 @@ function App() {
     audioRef.current.currentTime = ratio * duration;
   };
 
-  const formatTime = (time: number) => {
+  const formatTime = (time: number | undefined) => {
+    if (typeof time === 'undefined' || isNaN(time)) return '--:--';
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
@@ -124,6 +125,7 @@ function App() {
     setCurrentSong(song);
     setIsPlaying(true);
     setOpen(false);
+    setDuration(0); // Reset duration when changing songs
   };
 
   const handleSongEnd = () => {
@@ -153,7 +155,7 @@ function App() {
                 style={{ width: `${(currentTime / duration) * 100}%` }}
               />
             </div>
-            <div className="time">{formatTime(duration)}</div>
+            <div className="time">{formatTime(duration || undefined)}</div>
           </div>
           <div className="controls">
             <Button
