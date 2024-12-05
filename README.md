@@ -8,6 +8,7 @@ It's a web-based music player I built for myself's needs.
 - TypeScript
 - Vite
 - Tailwind CSS
+- Shadcn/ui
 
 ## Development
 
