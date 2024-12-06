@@ -40,6 +40,7 @@
   display: flex;
   justify-content: center;
   margin-bottom: 1.5rem;
+  align-items: center;
 }
 
 /* .controls button,
@@ -63,10 +64,10 @@
   flex: 1;
   height: 6px;
   background: #e3e3e3;
-  border-radius: 3px;
+  border-radius: 333px;
   cursor: pointer;
   position: relative;
-  transition: height 0.1s ease-in-out;
+  transition: height 0.25s ease-in-out;
 }
 
 .progress-bar:hover {
@@ -79,7 +80,7 @@
   top: 0;
   height: 100%;
   background: #333;
-  border-radius: 3px;
+  border-radius: 333px;
   transition: width 0.1s linear;
 }
 

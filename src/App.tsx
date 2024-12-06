@@ -4,7 +4,7 @@ import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, Dr
 import { useMediaQuery } from "@/hooks/use-media-query"
 import './App.css'
 import { DialogTitle } from '@radix-ui/react-dialog'
-import { PlayIcon, PauseIcon, ListIcon } from "lucide-react"
+import { PlayIcon, PauseIcon, ListIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 interface Song {
@@ -107,11 +107,19 @@ function App() {
     setIsPlaying(!isPlaying);
   };
 
-  // const playNext = () => {
-  //   const currentIndex = songs.findIndex(song => song.id === currentSong?.id);
-  //   const nextSong = songs[(currentIndex + 1) % songs.length];
-  //   setCurrentSong(nextSong);
-  // };
+  const playNext = () => {
+    const currentIndex = songs.findIndex(song => song.id === currentSong?.id);
+    const nextSong = songs[(currentIndex + 1) % songs.length];
+    setCurrentSong(nextSong);
+    setIsPlaying(true);
+  };
+
+  const playPrev = () => {
+    const currentIndex = songs.findIndex(song => song.id === currentSong?.id);
+    const prevSong = songs[(currentIndex - 1 + songs.length) % songs.length];
+    setCurrentSong(prevSong);
+    setIsPlaying(true);
+  };
 
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!audioRef.current) return;
@@ -159,15 +167,23 @@ function App() {
             <div className="progress-bar" onClick={handleProgressClick}>
               <div
                 className="progress-fill"
-                style={{ width: `${(currentTime / duration) * 100}%`, minWidth: '6px' }}
+                style={{ width: `${(currentTime / duration) * 100}%`, minWidth: '8px' }}
               />
             </div>
             <div className="time">{formatTime(duration || undefined)}</div>
           </div>
           <div className="controls">
             <Button
+              variant="ghost"
+              className="w-12 h-12 !rounded-full"
+              size="icon"
+              onClick={playPrev}
+            >
+              <ChevronLeftIcon className="!h-6 !w-6" />
+            </Button>
+            <Button
               variant="default"
-              className="w-16 h-16 !rounded-full"
+              className="w-16 h-16 !rounded-full mx-4"
               size="icon"
               onClick={togglePlay}
             >
@@ -176,6 +192,14 @@ function App() {
               ) : (
                 <PlayIcon className="!h-6 !w-6" />
               )}
+            </Button>
+            <Button
+              variant="ghost"
+              className="w-12 h-12 !rounded-full"
+              size="icon"
+              onClick={playNext}
+            >
+              <ChevronRightIcon className="!h-6 !w-6" />
             </Button>
           </div>
           <div className="playlist-control">
