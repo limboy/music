@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <!-- Ground: near-black with a soft lift in the centre, same tone as the app -->
+    <radialGradient id="bg" cx="50%" cy="46%" r="72%">
+      <stop offset="0" stop-color="#26252B"/>
+      <stop offset="0.55" stop-color="#141417"/>
+      <stop offset="1" stop-color="#08080A"/>
+    </radialGradient>
+
+    <!-- The three collections: Songs (coral) → Jazz (gold) → Piano (blue) -->
+    <linearGradient id="spectrum" x1="178" y1="0" x2="846" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF7A59"/>
+      <stop offset="0.5" stop-color="#E5B567"/>
+      <stop offset="1" stop-color="#9DB8FF"/>
+    </linearGradient>
+
+    <!-- Glassy sheen on each bar -->
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.24"/>
+      <stop offset="0.45" stop-color="#FFFFFF" stop-opacity="0.04"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.18"/>
+    </linearGradient>
+
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="46"/>
+    </filter>
+
+    <g id="bars">
+      <rect x="178" y="382" width="92" height="260" rx="46"/>
+      <rect x="322" y="272" width="92" height="480" rx="46"/>
+      <rect x="466" y="192" width="92" height="640" rx="46"/>
+      <rect x="610" y="302" width="92" height="420" rx="46"/>
+      <rect x="754" y="362" width="92" height="300" rx="46"/>
+    </g>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- Ambient glow behind the bars -->
+  <use href="#bars" fill="url(#spectrum)" filter="url(#glow)" opacity="0.55"/>
+
+  <!-- Bars -->
+  <use href="#bars" fill="url(#spectrum)"/>
+  <use href="#bars" fill="url(#sheen)"/>
+</svg>
