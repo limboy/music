@@ -36,7 +36,6 @@ struct NowPlayingView: View {
                         Spacer(minLength: 24)
                         titleBlock(track)
                             .padding(.horizontal, 32)
-                            .transition(.opacity.combined(with: .offset(y: -12)))
                     }
 
                     controls(track)
@@ -80,18 +79,20 @@ struct NowPlayingView: View {
     }
 
     private func titleBlock(_ track: Track) -> some View {
+        // Each line is matched with its counterpart in `compactHeader`, so toggling lyrics
+        // flies the title and singer up into the header instead of sliding them away.
         VStack(alignment: .center, spacing: 3) {
             Text(track.title)
                 .font(.system(size: 22, weight: .semibold))
+                .matchedGeometryEffect(id: "title", in: art, properties: .position)
             Text(track.artist)
                 .font(.system(size: 17))
                 .foregroundStyle(.white.opacity(0.7))
+                .matchedGeometryEffect(id: "artist", in: art, properties: .position)
         }
         .lineLimit(1)
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity)
-        .id(track.id)
-        .transition(.push(from: .trailing).combined(with: .opacity))
         .contentShape(Rectangle())
         .contextMenu { DownloadMenuItems(track: track) }
         .animation(.spring(duration: 0.45), value: track.id)
@@ -104,8 +105,13 @@ struct NowPlayingView: View {
                 .frame(width: 56, height: 56)
                 .shadow(color: .black.opacity(0.4), radius: 10, y: 6)
             VStack(alignment: .leading, spacing: 2) {
-                Text(track.title).font(.system(size: 17, weight: .semibold))
-                Text(track.artist).font(.system(size: 15)).foregroundStyle(.white.opacity(0.7))
+                Text(track.title)
+                    .font(.system(size: 17, weight: .semibold))
+                    .matchedGeometryEffect(id: "title", in: art, properties: .position)
+                Text(track.artist)
+                    .font(.system(size: 15))
+                    .foregroundStyle(.white.opacity(0.7))
+                    .matchedGeometryEffect(id: "artist", in: art, properties: .position)
             }
             .lineLimit(1)
             Spacer(minLength: 0)
